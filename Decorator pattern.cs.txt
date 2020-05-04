@@ -1,0 +1,70 @@
+using System;
+
+namespace DecoratorPattern
+{
+    public abstract class PizzaBase {
+        public abstract void CookOperation();
+    }
+
+    class Pizza : PizzaBase
+    {
+        public override void CookOperation()
+        {
+            Console.WriteLine("pizza base ready");
+        }
+    }
+
+    abstract class TopingDecorator : PizzaBase {
+
+        PizzaBase _base;
+
+        public TopingDecorator(PizzaBase pb)
+        {
+            _base = pb;
+        }
+
+        public override void CookOperation()
+        {
+            _base.CookOperation();
+        }
+    }
+
+    class TopingA : TopingDecorator
+    {
+        public TopingA(PizzaBase pb) : base(pb) { }
+
+        public override void CookOperation()
+        {
+            base.CookOperation();
+            Console.WriteLine("+ Toping A");
+        }
+    }
+
+    class TopingB : TopingDecorator
+    {
+        public TopingB(PizzaBase pb) : base(pb) { }
+
+        public override void CookOperation()
+        {
+            base.CookOperation();
+            Console.WriteLine("+ Toping B");
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            //simple pizza
+            Console.WriteLine("Sample Pizza");
+            PizzaBase pizza = new Pizza();
+            pizza.CookOperation();
+
+            //+ 2 toppings
+            Console.WriteLine("Customized Pizza");
+            PizzaBase pizza1 = new Pizza();
+            TopingDecorator topAnext = new TopingB(new TopingA(pizza1));
+            topAnext.CookOperation();
+        }
+    }
+}
